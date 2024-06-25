@@ -16,7 +16,15 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently in storage"""
+        """Returns a dictionary of models currently in storage.
+
+        Args:
+            cls (class, optional): If specified, filters the result to include
+                only objects of the specified class.
+
+        Returns:
+            dict: A dictionary containing objects in storage.
+        """
         if cls:
             if isinstance(cls, str):
                 cls = globals().get(cls)
@@ -40,7 +48,7 @@ class FileStorage:
             json.dump(temp, f)
 
     def reload(self):
-        """Loads storage dictionary from file"""
+        """Loads storage dictionary from file."""
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
                     'State': State, 'City': City, 'Amenity': Amenity,
@@ -51,7 +59,7 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
+                        self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
         except json.decoder.JSONDecodeError:
@@ -59,22 +67,16 @@ class FileStorage:
 
     def delete(self, obj=None):
         """
-        define obj from __objects if its inside - if obj is
-        is equal to none, do nothing
+         Delete obj from __objects if it’s inside - if obj is equal to None,
+           the method should not do anything
         """
         if obj is None:
             return
-        del_obj = f"(obj.__class__.__name__), {obj.id}"
+        obj_to_del = f"{obj.__class__.__name__}.{obj.id}"
 
         try:
-            del FileStorage.__objects[del_obj]
+            del FileStorage.__objects[obj_to_del]
         except AttributeError:
             pass
         except KeyboardInterrupt:
             pass
-
-    def close(self):
-        """
-        define close that calls reload
-        """
-        self.reload()

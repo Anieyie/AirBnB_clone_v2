@@ -1,32 +1,36 @@
 #!/usr/bin/python3
-""" importing Flask module
+"""Starts a Flask web application.
 """
 from flask import Flask
-from markupsafe import escape
 
 app = Flask(__name__)
+app.url_map.strict_slashes = False
 
 
-@app.route("/", strict_slashes=False)
-def hello():
-    """ Defining the function hello
+@app.route('/')
+def home():
     """
-    return "Hello HBNB!"
+    Displays 'Hello HBNB!'.
+    """
+    return 'Hello HBNB!'
 
 
-@app.route("/hbnb", strict_slashes=False)
-def display_hbnb():
-    """ Display HBNB """
+@app.route('/hbnb')
+def hbnb():
+    """
+    Displays 'HBNB'.
+    """
     return "HBNB"
 
 
-@app.route("/c/<text>", strict_slashes=False)
-def display_C(text):
-    """ display “C ” followed by the value of the text variable
+@app.route('/c/<text>')
+def c_with_params(text):
     """
-    text = text.replace("_", " ")
-    return "C {}".format(escape(text))
+    Displays 'C' followed by the value of <text>.
+    """
+    text_no_underscore = text.replace('_', ' ')
+    return "C {}".format(text_no_underscore)
 
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)

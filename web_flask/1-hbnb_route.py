@@ -1,23 +1,27 @@
 #!/usr/bin/python3
-""" importing Flask module
+"""Starts a Flask web application.
 """
 from flask import Flask
 
 app = Flask(__name__)
+app.url_map.strict_slashes = False
 
 
-@app.route("/", strict_slashes=False)
-def hello():
-    """ Defining the function hello
+@app.route('/')
+def home():
     """
-    return "Hello HBNB!"
+    Displays 'Hello HBNB!'.
+    """
+    return 'Hello HBNB!'
 
 
-@app.route("/hbnb", strict_slashes=False)
-def display_hbnb():
-    """ Display HBNB """
+@app.route('/hbnb')
+def hbnb():
+    """
+    Displays 'HBNB'.
+    """
     return "HBNB"
 
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)
